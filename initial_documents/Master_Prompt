@@ -1,0 +1,273 @@
+## **MASTER PROMPT FOR CLAUDE CODE: CARPENTRY QUEST**
+
+**Project Overview:**
+Create "Carpentry Quest" - a gamified carpentry apprenticeship preparation platform for someone starting from absolute zero. The user's partner loves red, motorcycles, Elden Ring, and going fast. They need to go from "never touched a tape measure" to union-ready in the most engaging way possible.
+
+**CRITICAL FIRST INSTRUCTION:**
+Read the skills at `/mnt/skills/public/` to understand best practices for creating a high-quality web application before starting.
+
+### **PHASE 1: Core Architecture & Skill Tree (Week 1)**
+
+Build the foundation with these specifications:
+
+**Tech Stack:**
+- React + TypeScript
+- Tailwind CSS for styling
+- Supabase for backend (auth, database, progress tracking)
+- PWA setup for mobile use on job sites
+- Local storage for offline capability
+
+**Database Schema:**
+```
+Users (id, email, created_at, current_xp, total_hours_practiced)
+Skills (id, name, category, required_xp, parent_skill_ids[], icon)
+UserSkills (user_id, skill_id, level[0-4], xp_progress, unlocked_at)
+Achievements (id, name, description, icon, xp_reward, requirement_type)
+UserAchievements (user_id, achievement_id, earned_at)
+DailyChallenges (id, date, challenges[3], completed_by_users[])
+PracticeSession (user_id, skill_id, duration, xp_earned, accuracy_score)
+```
+
+**Skill Tree Visualization:**
+Create an Elden Ring-inspired branching skill tree with 6 main paths:
+1. **Safety & Foundation** (PREREQUISITE FOR ALL)
+2. **Measurement Mastery** (Math & Measuring)
+3. **Tool Proficiency** (Hand → Power tools)
+4. **Material Knowledge** (Wood → Concrete → Steel)
+5. **Construction Systems** (Framing → Finishing)
+6. **Blueprint Reading** (Basic → Advanced)
+
+Each skill node shows:
+- Current level (0-4 stars)
+- XP progress bar (fills with red gradient)
+- Required parent skills (connected by glowing paths)
+- Hours practiced counter
+- "Motorcycle speedometer" style circular progress indicator
+
+**Visual Theme:**
+```css
+Primary Red: #C41E3A
+Dark Charcoal: #2C3E50
+Metallic Silver: #B8B8B8
+Sand Accent: #F4E5C2
+Success Green: #27AE60
+Warning Orange: #FF6B35
+```
+
+Background: Subtle garage/workshop texture
+UI Elements: Industrial/mechanical aesthetic with bolt details
+Fonts: Bold industrial for headers, clean sans for body
+
+### **PHASE 2: The Tape Measure Trainer (Week 2)**
+
+**THIS IS THE KILLER FEATURE - Build it perfectly!**
+
+Create an interactive tape measure simulator with these game modes:
+
+**1. Measurement Bootcamp (Tutorial)**
+- Animated tape measure that extends/retracts smoothly
+- Start with whole inches → halves → quarters → eighths → sixteenths
+- Visual guides showing how to read between marks
+- "Burn an inch" technique tutorial
+- Common mistakes warnings
+
+**2. Speed Measurement (Daily Challenge)**
+- Random measurements appear: "Find 7-5/8 inches"
+- Timer counts down from 30 seconds
+- Accuracy within 1/16" for full points
+- Streak counter for consecutive correct
+- Leaderboard comparing to other users
+- Daily bonus XP for 7-day streaks
+
+**3. Real World Simulator**
+- "Boss calls out: Cut me a stud at 92-5/8 inches"
+- Must read measurement, account for blade kerf
+- Calculate how many pieces from a 12' board
+- Time pressure increases with level
+
+**4. The Framing Challenge**
+- Given room dimensions, calculate materials needed
+- Add 10% waste factor
+- Convert between feet/inches and decimal
+- Boss Mode: "You have 5 minutes to calculate materials for a 16' x 20' deck"
+
+**Visual Design:**
+- Photorealistic tape measure rendering using CSS/Canvas
+- Smooth sliding animation with inertia
+- Measurement marks glow when correct
+- Wrong measurements shake and turn orange
+- Success creates particle effects (sawdust animation)
+
+### **PHASE 3: Math Modules (Week 3)**
+
+**Carpentry Math Trainer** focusing on union test requirements:
+
+**Fraction Fighter**
+- Fraction addition/subtraction with carpentry context
+- Visual representations using lumber pieces
+- Common denominators (2, 4, 8, 16) emphasized
+- Speed rounds with increasing difficulty
+
+**Pythagorean Theorem Master**
+- 3-4-5 rule trainer for squaring foundations
+- Interactive triangle calculator
+- Rafter length calculator with visual roof diagram
+- "Is this corner square?" quick challenges
+
+**Board Foot Calculator**
+- Interactive calculator with visual feedback
+- Practice problems from actual lumber orders
+- Waste percentage calculator
+- Price estimation challenges
+
+**Stair Builder Simulator**
+- Input total rise, calculate steps needed
+- 2R + T = 24-26" formula practice
+- Visual stair diagram updates in real-time
+- Code compliance checker
+
+### **PHASE 4: Achievement System & Daily Challenges (Week 4)**
+
+**Achievement Categories:**
+```javascript
+Speed Achievements: {
+  "Lightning Measure": "Complete 50 measurements in under 15 seconds each",
+  "Fraction Fury": "Solve 100 fraction problems without error",
+  "Blueprint Blitz": "Read 10 blueprints correctly in one session"
+}
+
+Accuracy Achievements: {
+  "Precision Master": "100 consecutive measurements within 1/16 inch",
+  "Square Eye": "Identify 50 square corners correctly",
+  "Zero Waste": "Calculate materials with <5% waste 10 times"
+}
+
+Endurance Achievements: {
+  "Iron Will": "Practice 30 days straight",
+  "8-Hour Shift": "Log 8 hours in one day",
+  "Apprentice Ready": "Complete 200 total hours"
+}
+```
+
+**Daily Challenge System:**
+- 3 challenges refresh at 5 AM (construction start time)
+- Examples: "Measure 10 boards correctly", "Calculate rafter for 4:12 pitch roof", "Identify 5 safety violations"
+- Completion gives bonus XP and special "Daily Striker" badges
+- Monthly leaderboard with special red/chrome badges
+
+### **PHASE 5: Safety Module & OSHA Prep (Week 5)**
+
+**Interactive Safety Trainer:**
+- OSHA Focus Four hazards with visual scenarios
+- PPE inspection checklist simulator
+- Fall protection calculator (6-foot rule)
+- Ladder angle calculator (4:1 ratio visualizer)
+- "Spot the Violation" photo challenges
+
+**Accident Prevention Simulator:**
+- Time-pressure scenarios: "Worker approaching unguarded edge - what do you do?"
+- Correct responses earn Safety Stars
+- Wrong answers show consequences (educational, not graphic)
+- Based on actual OSHA incident reports
+
+### **PHASE 6: Progress Tracking & Reporting (Week 6)**
+
+**Personal Dashboard:**
+- XP progress bar with level indicator (Apprentice Level 1-50)
+- Skill tree overview showing unlocked paths
+- Hours practiced by category (pie chart)
+- Accuracy trends (line graph)
+- Current union readiness score (0-100%)
+
+**Portfolio Generator:**
+- Automatically generates PDF resume of skills completed
+- Certificates for each mastered module
+- Total hours documented
+- Can share with union applications
+
+### **PHASE 7: Blueprint Reading Basics (Week 7)**
+
+**Interactive Blueprint Viewer:**
+- Start with simple floor plans
+- Click elements to identify (walls, doors, windows)
+- Dimension reading challenges
+- Symbol identification flashcards
+- Progress to sections and elevations
+
+### **PHASE 8: Mobile Optimization & PWA (Week 8)**
+
+**Mobile-First Features:**
+- Offline mode for job site use
+- Quick reference guides downloadable
+- Tool identification flashcards
+- One-handed operation for all features
+- Battery-conscious design
+
+**Progressive Web App:**
+- Install prompt on first visit
+- Home screen icon (red hammer logo)
+- Push notifications for daily challenges
+- Sync progress when reconnected
+
+### **SPECIAL FEATURES TO IMPLEMENT:**
+
+**Easter Eggs & Fun Elements:**
+- Unlock "Motorcycle Mode" at 100 hours (speed-themed UI skin)
+- Hidden "Boss Battle" challenges that unlock special tools
+- Sound effects: hammer strikes for correct answers, saw sounds for cuts
+- Confetti explosions for level ups
+- Secret "Golden Hammer" achievement for perfectionists
+
+**Social Features:**
+- Crew Creation (form study groups)
+- Challenge friends to measurement duels
+- Share achievements on social media
+- Mentorship pairing (advanced users help beginners)
+
+### **CRITICAL SUCCESS METRICS:**
+
+The app should track and display:
+- Daily Active Use (target: 30+ minutes)
+- Measurement Accuracy Improvement Over Time
+- Math Problem Success Rate
+- Total Practice Hours Logged
+- Skills Progressing Toward Level 3+ (proficient)
+
+### **INITIAL DATA TO PRELOAD:**
+
+Include these in the initial database:
+- 500+ measurement challenges
+- 300+ fraction problems  
+- 200+ Pythagorean theorem scenarios
+- 100+ safety violation photos
+- 50+ blueprint samples
+- OSHA Focus Four complete content
+- Tool identification for 50 essential tools
+
+### **START WITH THIS TEST:**
+
+Create a simple "How ready are you?" diagnostic that tests:
+1. Can you read a tape measure? (5 measurements)
+2. Can you add fractions? (5 problems)
+3. Do you know basic tools? (10 identifications)
+4. Do you understand job site safety? (5 scenarios)
+
+Score determines starting point in skill tree and recommends first modules.
+
+### **REMEMBER:**
+Your users are adults starting from ZERO. No assumptions about prior knowledge. Every feature should be:
+- Immediately useful for getting a union job
+- Engaging enough to practice daily
+- Accurate to real industry requirements
+- Respectful of adult learners
+- Focused on the 20% of skills that matter 80% of the time
+
+Build this iteratively, test each feature, and make it FAST and SMOOTH. The partner likes speed - make everything responsive and snappy. Use red accents throughout but don't overdo it. Think "high-performance garage" aesthetic.
+
+Start with Phase 1, get authentication working, then build the tape measure trainer as the showcase feature. Everything else builds from there.
+
+Good luck! This is going to change someone's life! 🔨
+
+---
+
+There you go! This prompt gives Claude Code everything needed to build something genuinely useful while keeping it fun and engaging. The tape measure trainer alone could be a standalone app - it's that important. Want me to adjust anything before you hand it off?
