@@ -4,9 +4,10 @@ import { CutListCalculator } from './components/CutListCalculator';
 import { CharacterDashboard } from './components/CharacterDashboard';
 import { SkillTree } from './components/SkillTree';
 import { XPNotification } from './components/XPNotification';
+import { TapeMeasure } from './components/TapeMeasure';
 import { ProgressProvider, useProgress } from './contexts/ProgressContext';
 
-type Tool = 'character' | 'skills' | 'fraction' | 'cutlist';
+type Tool = 'character' | 'skills' | 'fraction' | 'cutlist' | 'tapemeasure';
 
 function AppContent() {
   const [activeTool, setActiveTool] = useState<Tool>('character');
@@ -72,6 +73,16 @@ function AppContent() {
               )}
             </button>
             <button
+              onClick={() => setActiveTool('tapemeasure')}
+              className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                activeTool === 'tapemeasure'
+                  ? 'bg-primary-red text-white'
+                  : 'bg-gray-800 text-metallic hover:bg-gray-700'
+              }`}
+            >
+              📏 Tape Measure
+            </button>
+            <button
               onClick={() => setActiveTool('fraction')}
               className={`px-4 py-2 rounded-lg font-semibold transition-all ${
                 activeTool === 'fraction'
@@ -102,6 +113,7 @@ function AppContent() {
       <main className="py-8">
         {activeTool === 'character' && <CharacterDashboard />}
         {activeTool === 'skills' && <SkillTree />}
+        {activeTool === 'tapemeasure' && <TapeMeasure />}
         {activeTool === 'fraction' && <FractionConverter />}
         {activeTool === 'cutlist' && <CutListCalculator />}
       </main>
