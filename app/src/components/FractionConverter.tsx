@@ -9,6 +9,7 @@ import {
   divideFractions,
   type Fraction,
 } from '../utils/fractionMath';
+import { useProgress } from '../contexts/ProgressContext';
 
 type Operation = 'add' | 'subtract' | 'multiply' | 'divide' | null;
 
@@ -18,6 +19,13 @@ export function FractionConverter() {
   const [operation, setOperation] = useState<Operation>(null);
   const [result, setResult] = useState<string>('');
   const [showSuccess, setShowSuccess] = useState(false);
+
+  const {
+    awardXP,
+    incrementStat,
+    updateChallengeProgress,
+    getChallengeProgress,
+  } = useProgress();
 
   const handleConvert = () => {
     const fraction = parseFraction(input1);
@@ -31,6 +39,21 @@ export function FractionConverter() {
 
     setResult(`${fractionStr} = ${decimal.toFixed(4)}"`);
     triggerSuccess();
+
+    // Award XP and track stats
+    awardXP(5, 'Fraction conversion');
+    incrementStat('fractionsConverted');
+
+    // Update challenge progress
+    const currentCount = getChallengeProgress('fraction-first-steps') || 0;
+    updateChallengeProgress('fraction-first-steps', currentCount + 1);
+
+    const apprenticeCount = getChallengeProgress('fraction-apprentice') || 0;
+    updateChallengeProgress('fraction-apprentice', apprenticeCount + 1);
+
+    // Daily challenge (count resets would need date tracking, simplified for now)
+    const dailyCount = getChallengeProgress('fraction-daily') || 0;
+    updateChallengeProgress('fraction-daily', dailyCount + 1);
   };
 
   const handleCalculate = () => {
@@ -70,6 +93,14 @@ export function FractionConverter() {
     const resultDecimal = fractionToDecimal(resultFraction);
     setResult(`${resultStr} (${resultDecimal.toFixed(4)}")`);
     triggerSuccess();
+
+    // Award XP and track stats
+    awardXP(10, 'Fraction calculation');
+    incrementStat('fractionsCalculated');
+
+    // Update challenge progress
+    const calcCount = getChallengeProgress('fraction-calculator') || 0;
+    updateChallengeProgress('fraction-calculator', calcCount + 1);
   };
 
   const triggerSuccess = () => {

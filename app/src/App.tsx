@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import { FractionConverter } from './components/FractionConverter';
 import { CutListCalculator } from './components/CutListCalculator';
+import { CharacterDashboard } from './components/CharacterDashboard';
+import { SkillTree } from './components/SkillTree';
+import { XPNotification } from './components/XPNotification';
+import { ProgressProvider, useProgress } from './contexts/ProgressContext';
 
-type Tool = 'fraction' | 'cutlist';
+type Tool = 'character' | 'skills' | 'fraction' | 'cutlist';
 
-function App() {
-  const [activeTool, setActiveTool] = useState<Tool>('fraction');
+function AppContent() {
+  const [activeTool, setActiveTool] = useState<Tool>('character');
+  const { progress } = useProgress();
 
   return (
     <div className="min-h-screen bg-charcoal">
@@ -22,10 +27,50 @@ function App() {
                 <p className="text-metallic text-sm">Level Up Your Skills</p>
               </div>
             </div>
+
+            {/* Level Badge */}
+            <div className="bg-gray-800 px-4 py-2 rounded-lg border-2 border-primary-red">
+              <div className="flex items-center gap-3">
+                <div className="text-2xl">🔨</div>
+                <div>
+                  <div className="text-xs text-metallic">Level</div>
+                  <div className="text-xl font-bold text-primary-red">{progress.level}</div>
+                </div>
+                <div className="border-l border-metallic/30 pl-3">
+                  <div className="text-xs text-metallic">SP</div>
+                  <div className="text-xl font-bold text-sand">{progress.skillPoints}</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Navigation */}
-          <nav className="mt-6 flex gap-2">
+          <nav className="mt-6 flex gap-2 flex-wrap">
+            <button
+              onClick={() => setActiveTool('character')}
+              className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                activeTool === 'character'
+                  ? 'bg-primary-red text-white'
+                  : 'bg-gray-800 text-metallic hover:bg-gray-700'
+              }`}
+            >
+              📊 Character
+            </button>
+            <button
+              onClick={() => setActiveTool('skills')}
+              className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                activeTool === 'skills'
+                  ? 'bg-primary-red text-white'
+                  : 'bg-gray-800 text-metallic hover:bg-gray-700'
+              }`}
+            >
+              🌳 Skill Tree
+              {progress.skillPoints > 0 && (
+                <span className="ml-2 bg-warning text-charcoal px-2 py-0.5 rounded-full text-xs font-bold">
+                  {progress.skillPoints}
+                </span>
+              )}
+            </button>
             <button
               onClick={() => setActiveTool('fraction')}
               className={`px-4 py-2 rounded-lg font-semibold transition-all ${
@@ -34,7 +79,7 @@ function App() {
                   : 'bg-gray-800 text-metallic hover:bg-gray-700'
               }`}
             >
-              Fraction Converter
+              🔢 Fraction Converter
             </button>
             <button
               onClick={() => setActiveTool('cutlist')}
@@ -44,14 +89,19 @@ function App() {
                   : 'bg-gray-800 text-metallic hover:bg-gray-700'
               }`}
             >
-              Cut-List Calculator
+              🪚 Cut-List Calculator
             </button>
           </nav>
         </div>
       </header>
 
+      {/* XP Notifications */}
+      <XPNotification />
+
       {/* Main Content */}
       <main className="py-8">
+        {activeTool === 'character' && <CharacterDashboard />}
+        {activeTool === 'skills' && <SkillTree />}
         {activeTool === 'fraction' && <FractionConverter />}
         {activeTool === 'cutlist' && <CutListCalculator />}
       </main>
@@ -63,6 +113,14 @@ function App() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <ProgressProvider>
+      <AppContent />
+    </ProgressProvider>
   );
 }
 
