@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    @apply bg-charcoal text-white min-h-screen;
+  }
+
+  h1 {
+    @apply text-4xl font-bold;
+  }
+
+  h2 {
+    @apply text-3xl font-bold;
+  }
+
+  h3 {
+    @apply text-2xl font-semibold;
+  }
+}
+
+@layer components {
+  /* Custom button styles with red accent */
+  .btn-primary {
+    @apply bg-primary-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply bg-metallic hover:bg-gray-400 text-charcoal font-bold py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95;
+  }
+
+  /* Card component with industrial aesthetic */
+  .card {
+    @apply bg-gray-800 rounded-lg p-6 shadow-xl border border-metallic/20;
+  }
+
+  /* XP progress bar */
+  .progress-bar {
+    @apply bg-gray-700 rounded-full h-3 overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply bg-gradient-to-r from-primary-red to-red-600 h-full transition-all duration-500 ease-out;
+  }
+
+  /* Input fields */
+  .input {
+    @apply bg-gray-700 text-white border-2 border-metallic/30 rounded-lg px-4 py-2 focus:border-primary-red focus:outline-none transition-colors;
+  }
+}
+
+/* Sawdust particle animation */
+@keyframes sawdust {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(50px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.sawdust-particle {
+  animation: sawdust 1s ease-out forwards;
+}
+
+/* XP gain floating animation */
+@keyframes xp-float {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+}
+
+.xp-gain {
+  animation: xp-float 1s ease-out forwards;
+}
+
+/* Success flash animation */
+@keyframes success-flash {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.success-flash {
+  animation: success-flash 0.5s ease-in-out;
+}
