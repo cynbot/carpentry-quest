@@ -8,6 +8,7 @@ import {
   type Cut,
   type CutPlan,
 } from '../utils/cutListCalculator';
+import { useProgress } from '../contexts/ProgressContext';
 
 export function CutListCalculator() {
   const [boardLength, setBoardLength] = useState(144); // 12 feet default
@@ -17,6 +18,13 @@ export function CutListCalculator() {
   const [cutQuantity, setCutQuantity] = useState('1');
   const [cutLabel, setCutLabel] = useState('');
   const [cutPlan, setCutPlan] = useState<CutPlan | null>(null);
+
+  const {
+    awardXP,
+    incrementStat,
+    updateChallengeProgress,
+    getChallengeProgress,
+  } = useProgress();
 
   const handleAddCut = () => {
     const length = parseLength(cutLength);
@@ -62,6 +70,24 @@ export function CutListCalculator() {
 
     const plan = calculateCutPlan(cuts, boardLength, sawKerf);
     setCutPlan(plan);
+
+    // Award XP and track stats
+    awardXP(15, 'Cut list calculation');
+    incrementStat('cutListsCalculated');
+
+    // Update challenge progress
+    const firstPlanCount = getChallengeProgress('cutlist-first-plan') || 0;
+    updateChallengeProgress('cutlist-first-plan', firstPlanCount + 1);
+
+    const optimizerCount = getChallengeProgress('cutlist-optimizer') || 0;
+    updateChallengeProgress('cutlist-optimizer', optimizerCount + 1);
+
+    // Check for efficiency challenge (less than 5% waste)
+    if (plan.wastePercentage < 5) {
+      awardXP(25, 'Efficiency bonus!');
+      const efficiencyCount = getChallengeProgress('cutlist-efficiency') || 0;
+      updateChallengeProgress('cutlist-efficiency', efficiencyCount + 1);
+    }
   };
 
   const handleClearAll = () => {
