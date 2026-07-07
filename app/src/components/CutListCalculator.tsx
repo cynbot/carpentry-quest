@@ -8,7 +8,6 @@ import {
   type Cut,
   type CutPlan,
 } from '../utils/cutListCalculator';
-import { useProgress } from '../contexts/ProgressContext';
 
 export function CutListCalculator() {
   const [boardLength, setBoardLength] = useState(144); // 12 feet default
@@ -18,13 +17,6 @@ export function CutListCalculator() {
   const [cutQuantity, setCutQuantity] = useState('1');
   const [cutLabel, setCutLabel] = useState('');
   const [cutPlan, setCutPlan] = useState<CutPlan | null>(null);
-
-  const {
-    awardXP,
-    incrementStat,
-    updateChallengeProgress,
-    getChallengeProgress,
-  } = useProgress();
 
   const handleAddCut = () => {
     const length = parseLength(cutLength);
@@ -70,24 +62,6 @@ export function CutListCalculator() {
 
     const plan = calculateCutPlan(cuts, boardLength, sawKerf);
     setCutPlan(plan);
-
-    // Award XP and track stats
-    awardXP(15, 'Cut list calculation');
-    incrementStat('cutListsCalculated');
-
-    // Update challenge progress
-    const firstPlanCount = getChallengeProgress('cutlist-first-plan') || 0;
-    updateChallengeProgress('cutlist-first-plan', firstPlanCount + 1);
-
-    const optimizerCount = getChallengeProgress('cutlist-optimizer') || 0;
-    updateChallengeProgress('cutlist-optimizer', optimizerCount + 1);
-
-    // Check for efficiency challenge (less than 5% waste)
-    if (plan.wastePercentage < 5) {
-      awardXP(25, 'Efficiency bonus!');
-      const efficiencyCount = getChallengeProgress('cutlist-efficiency') || 0;
-      updateChallengeProgress('cutlist-efficiency', efficiencyCount + 1);
-    }
   };
 
   const handleClearAll = () => {
@@ -99,7 +73,7 @@ export function CutListCalculator() {
     <div className="max-w-4xl mx-auto p-6">
       <div className="card">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-1 h-8 bg-primary-red rounded-full" />
+          <div className="w-1 h-8 bg-heartwood rounded-full" />
           <h2 className="text-3xl font-bold">Cut-List Calculator</h2>
         </div>
 
@@ -146,7 +120,7 @@ export function CutListCalculator() {
 
         {/* Add Cut Form */}
         <div className="bg-gray-900 rounded-lg p-4 mb-6">
-          <h3 className="text-lg font-semibold mb-4 text-primary-red">Add Cut</h3>
+          <h3 className="text-lg font-semibold mb-4 text-heartwood">Add Cut</h3>
           <div className="grid md:grid-cols-4 gap-3">
             <div className="md:col-span-2">
               <input
@@ -191,7 +165,7 @@ export function CutListCalculator() {
         {cuts.length > 0 && (
           <div className="mb-6">
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-lg font-semibold text-primary-red">Your Cuts</h3>
+              <h3 className="text-lg font-semibold text-heartwood">Your Cuts</h3>
               <button onClick={handleClearAll} className="text-sm text-metallic hover:text-white">
                 Clear All
               </button>
@@ -227,12 +201,12 @@ export function CutListCalculator() {
         {/* Results */}
         {cutPlan && (
           <div className="mt-8 pt-6 border-t border-metallic/20">
-            <h3 className="text-2xl font-bold mb-4 text-primary-red">Cut Plan</h3>
+            <h3 className="text-2xl font-bold mb-4 text-heartwood">Cut Plan</h3>
 
             {/* Summary */}
             <div className="grid md:grid-cols-3 gap-4 mb-6">
               <div className="bg-gray-900 rounded-lg p-4 text-center">
-                <div className="text-3xl font-bold text-primary-red">
+                <div className="text-3xl font-bold text-heartwood">
                   {cutPlan.totalBoardsNeeded}
                 </div>
                 <div className="text-sm text-metallic">Boards Needed</div>
@@ -271,7 +245,7 @@ export function CutListCalculator() {
                       return (
                         <div
                           key={index}
-                          className="absolute top-0 bottom-0 bg-primary-red/70 border-r-2 border-white/20 flex items-center justify-center text-xs font-bold"
+                          className="absolute top-0 bottom-0 bg-heartwood/70 border-r-2 border-white/20 flex items-center justify-center text-xs font-bold"
                           style={{
                             left: `${leftPercent}%`,
                             width: `${widthPercent}%`,

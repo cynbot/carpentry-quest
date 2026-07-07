@@ -95,7 +95,7 @@ export function parseFraction(input: string): Fraction | null {
   }
 
   // Check for mixed fraction like "3-5/8" or "3 5/8"
-  const mixedMatch = input.match(/^(\d+)[\s\-](\d+)\/(\d+)$/);
+  const mixedMatch = input.match(/^(\d+)[\s-](\d+)\/(\d+)$/);
   if (mixedMatch) {
     const whole = parseInt(mixedMatch[1]);
     const numerator = parseInt(mixedMatch[2]);

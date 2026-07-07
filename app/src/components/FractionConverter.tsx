@@ -9,7 +9,6 @@ import {
   divideFractions,
   type Fraction,
 } from '../utils/fractionMath';
-import { useProgress } from '../contexts/ProgressContext';
 
 type Operation = 'add' | 'subtract' | 'multiply' | 'divide' | null;
 
@@ -19,13 +18,6 @@ export function FractionConverter() {
   const [operation, setOperation] = useState<Operation>(null);
   const [result, setResult] = useState<string>('');
   const [showSuccess, setShowSuccess] = useState(false);
-
-  const {
-    awardXP,
-    incrementStat,
-    updateChallengeProgress,
-    getChallengeProgress,
-  } = useProgress();
 
   const handleConvert = () => {
     const fraction = parseFraction(input1);
@@ -39,21 +31,6 @@ export function FractionConverter() {
 
     setResult(`${fractionStr} = ${decimal.toFixed(4)}"`);
     triggerSuccess();
-
-    // Award XP and track stats
-    awardXP(5, 'Fraction conversion');
-    incrementStat('fractionsConverted');
-
-    // Update challenge progress
-    const currentCount = getChallengeProgress('fraction-first-steps') || 0;
-    updateChallengeProgress('fraction-first-steps', currentCount + 1);
-
-    const apprenticeCount = getChallengeProgress('fraction-apprentice') || 0;
-    updateChallengeProgress('fraction-apprentice', apprenticeCount + 1);
-
-    // Daily challenge (count resets would need date tracking, simplified for now)
-    const dailyCount = getChallengeProgress('fraction-daily') || 0;
-    updateChallengeProgress('fraction-daily', dailyCount + 1);
   };
 
   const handleCalculate = () => {
@@ -93,14 +70,6 @@ export function FractionConverter() {
     const resultDecimal = fractionToDecimal(resultFraction);
     setResult(`${resultStr} (${resultDecimal.toFixed(4)}")`);
     triggerSuccess();
-
-    // Award XP and track stats
-    awardXP(10, 'Fraction calculation');
-    incrementStat('fractionsCalculated');
-
-    // Update challenge progress
-    const calcCount = getChallengeProgress('fraction-calculator') || 0;
-    updateChallengeProgress('fraction-calculator', calcCount + 1);
   };
 
   const triggerSuccess = () => {
@@ -123,7 +92,7 @@ export function FractionConverter() {
         )}
 
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-1 h-8 bg-primary-red rounded-full" />
+          <div className="w-1 h-8 bg-heartwood rounded-full" />
           <h2 className="text-3xl font-bold">Fraction Converter</h2>
         </div>
 
@@ -134,7 +103,7 @@ export function FractionConverter() {
 
         {/* Converter Mode */}
         <div className="mb-8">
-          <h3 className="text-xl font-semibold mb-4 text-primary-red">Convert</h3>
+          <h3 className="text-xl font-semibold mb-4 text-heartwood">Convert</h3>
           <div className="flex gap-4">
             <input
               type="text"
@@ -152,7 +121,7 @@ export function FractionConverter() {
 
         {/* Calculator Mode */}
         <div className="mb-8">
-          <h3 className="text-xl font-semibold mb-4 text-primary-red">Calculate</h3>
+          <h3 className="text-xl font-semibold mb-4 text-heartwood">Calculate</h3>
 
           {/* First Input */}
           <div className="mb-3">
@@ -173,7 +142,7 @@ export function FractionConverter() {
                 onClick={() => setOperation(op)}
                 className={`py-3 px-4 rounded-lg font-bold text-xl transition-all ${
                   operation === op
-                    ? 'bg-primary-red text-white'
+                    ? 'bg-heartwood text-charcoal'
                     : 'bg-gray-700 text-metallic hover:bg-gray-600'
                 }`}
               >
@@ -201,7 +170,7 @@ export function FractionConverter() {
 
         {/* Result Display */}
         {result && (
-          <div className="bg-gray-900 rounded-lg p-6 border-2 border-primary-red">
+          <div className="bg-gray-900 rounded-lg p-6 border-2 border-heartwood">
             <div className="text-sm text-metallic mb-1">Result:</div>
             <div className="text-2xl font-bold font-mono text-sand">{result}</div>
           </div>
