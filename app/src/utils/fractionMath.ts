@@ -122,48 +122,68 @@ export function parseFraction(input: string): Fraction | null {
 }
 
 /**
- * Format fraction as string like "3-5/8" or "5/8"
+ * Format fraction as string like "3-5/8" or "5/8".
+ * Negative values (possible from subtraction) read as "-1-1/4" = -(1 + 1/4).
  */
 export function formatFraction(fraction: Fraction): string {
-  if (fraction.numerator === 0) {
-    return fraction.whole.toString();
+  const negative = fraction.whole < 0 || fraction.numerator < 0;
+  const whole = Math.abs(fraction.whole);
+  const numerator = Math.abs(fraction.numerator);
+  const sign = negative ? '-' : '';
+
+  if (numerator === 0) {
+    return `${sign}${whole}`;
   }
 
-  if (fraction.whole === 0) {
-    return `${fraction.numerator}/${fraction.denominator}`;
+  if (whole === 0) {
+    return `${sign}${numerator}/${fraction.denominator}`;
   }
 
-  return `${fraction.whole}-${fraction.numerator}/${fraction.denominator}`;
+  return `${sign}${whole}-${numerator}/${fraction.denominator}`;
+}
+
+/** Numerator of the improper form; sign lives on the numerator. */
+function toImproper(f: Fraction): number {
+  const magnitude = Math.abs(f.whole) * f.denominator + Math.abs(f.numerator);
+  return f.whole < 0 || f.numerator < 0 ? -magnitude : magnitude;
+}
+
+/** Normalize an improper num/den into a reduced mixed Fraction. */
+function improperToFraction(num: number, den: number): Fraction {
+  const negative = num < 0 !== den < 0;
+  const { numerator, denominator } = reduceFraction(Math.abs(num), Math.abs(den));
+  const whole = Math.floor(numerator / denominator);
+  const remainder = numerator - whole * denominator;
+  return negative
+    ? { whole: whole === 0 ? 0 : -whole, numerator: remainder === 0 ? 0 : -remainder, denominator }
+    : { whole, numerator: remainder, denominator };
 }
 
 /**
- * Add two fractions
+ * Arithmetic is exact rational math — no float round-tripping, so results
+ * like 1/3 + 1/3 = 2/3 come out true instead of snapped to 64ths.
  */
 export function addFractions(a: Fraction, b: Fraction): Fraction {
-  const decimalResult = fractionToDecimal(a) + fractionToDecimal(b);
-  return decimalToFraction(decimalResult);
+  return improperToFraction(
+    toImproper(a) * b.denominator + toImproper(b) * a.denominator,
+    a.denominator * b.denominator
+  );
 }
 
-/**
- * Subtract two fractions
- */
 export function subtractFractions(a: Fraction, b: Fraction): Fraction {
-  const decimalResult = fractionToDecimal(a) - fractionToDecimal(b);
-  return decimalToFraction(decimalResult);
+  return improperToFraction(
+    toImproper(a) * b.denominator - toImproper(b) * a.denominator,
+    a.denominator * b.denominator
+  );
 }
 
-/**
- * Multiply two fractions
- */
 export function multiplyFractions(a: Fraction, b: Fraction): Fraction {
-  const decimalResult = fractionToDecimal(a) * fractionToDecimal(b);
-  return decimalToFraction(decimalResult);
+  return improperToFraction(toImproper(a) * toImproper(b), a.denominator * b.denominator);
 }
 
-/**
- * Divide two fractions
- */
-export function divideFractions(a: Fraction, b: Fraction): Fraction {
-  const decimalResult = fractionToDecimal(a) / fractionToDecimal(b);
-  return decimalToFraction(decimalResult);
+/** Returns null on division by zero. */
+export function divideFractions(a: Fraction, b: Fraction): Fraction | null {
+  const nb = toImproper(b);
+  if (nb === 0) return null;
+  return improperToFraction(toImproper(a) * b.denominator, a.denominator * nb);
 }

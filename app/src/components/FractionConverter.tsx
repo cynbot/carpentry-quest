@@ -47,7 +47,7 @@ export function FractionConverter() {
       return;
     }
 
-    let resultFraction: Fraction;
+    let resultFraction: Fraction | null;
 
     switch (operation) {
       case 'add':
@@ -64,6 +64,11 @@ export function FractionConverter() {
         break;
       default:
         return;
+    }
+
+    if (!resultFraction) {
+      setResult('Cannot divide by zero');
+      return;
     }
 
     const resultStr = formatFraction(resultFraction);
