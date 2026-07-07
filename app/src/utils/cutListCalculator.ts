@@ -38,7 +38,7 @@ export function parseLength(input: string): number | null {
   input = input.trim().replace(/"/g, '').replace(/'/g, '-');
 
   // Check for feet-inches format
-  const feetInchesMatch = input.match(/^(\d+)[\s\-](\d+(?:\.\d+)?)$/);
+  const feetInchesMatch = input.match(/^(\d+)[\s-](\d+(?:\.\d+)?)$/);
   if (feetInchesMatch) {
     const feet = parseInt(feetInchesMatch[1]);
     const inches = parseFloat(feetInchesMatch[2]);
